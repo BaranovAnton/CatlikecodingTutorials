@@ -6,17 +6,17 @@ using System.IO;
 public class Game : PersistableObject
 {
     public PersistentStorage storage;
-    public PersistableObject prefab;
+    public ShapeFactory shapeFactory;
     public KeyCode keyCode = KeyCode.C;
     public KeyCode newGameCode = KeyCode.N;
     public KeyCode saveKey = KeyCode.S;
     public KeyCode loadKey = KeyCode.L;
 
-    private List<PersistableObject> objects;
+    private List<Shape> shapes;
 
     private void Awake()
     {
-        objects = new List<PersistableObject>();
+        shapes = new List<Shape>();
     }
 
     void Update()
@@ -45,24 +45,24 @@ public class Game : PersistableObject
         t.localPosition = Random.insideUnitSphere * 5f;
         t.localRotation = Random.rotation;
         t.localScale = Vector3.one * Random.Range(0.1f, 1.0f);
-        objects.Add(o);
+        shapes.Add(o);
     }
 
     private void BeginNewGame()
     {
-        for (int i=0; i<objects.Count; i++)
+        for (int i=0; i<shapes.Count; i++)
         {
-            Destroy(objects[i].gameObject);
+            Destroy(shapes[i].gameObject);
         }
-        objects.Clear();
+        shapes.Clear();
     }
 
     public override void Save(GameDataWriter writer)
     {
-        writer.Write(objects.Count);
-        for (int i = 0; i < objects.Count; i++)
+        writer.Write(shapes.Count);
+        for (int i = 0; i < shapes.Count; i++)
         {
-            objects[i].Save(writer);
+            shapes[i].Save(writer);
         }
     }
 
@@ -73,7 +73,7 @@ public class Game : PersistableObject
         {
             PersistableObject o = Instantiate(prefab);
             o.Load(reader);
-            objects.Add(o);
+            shapes.Add(o);
         }
     }
 }
