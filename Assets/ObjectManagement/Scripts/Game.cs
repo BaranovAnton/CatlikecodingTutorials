@@ -23,7 +23,7 @@ public class Game : PersistableObject
     {
         if (Input.GetKeyDown(keyCode))
         {
-            CreateObject();
+            CreateShape();
         } else if (Input.GetKeyDown(newGameCode))
         {
             BeginNewGame();
@@ -37,15 +37,15 @@ public class Game : PersistableObject
         }
     }
 
-    private void CreateObject()
+    private void CreateShape()
     {
-        PersistableObject o = Instantiate(prefab);
-        Transform t = o.transform;
+        Shape instance = shapeFactory.GetRandom();
+        Transform t = instance.transform;
 
         t.localPosition = Random.insideUnitSphere * 5f;
         t.localRotation = Random.rotation;
         t.localScale = Vector3.one * Random.Range(0.1f, 1.0f);
-        shapes.Add(o);
+        shapes.Add(instance);
     }
 
     private void BeginNewGame()
@@ -71,9 +71,9 @@ public class Game : PersistableObject
         int count = reader.ReadInt();
         for (int i = 0; i < count; i++)
         {
-            PersistableObject o = Instantiate(prefab);
-            o.Load(reader);
-            shapes.Add(o);
+            Shape instance = shapeFactory.Get(0);
+            instance.Load(reader);
+            shapes.Add(instance);
         }
     }
 }
