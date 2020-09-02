@@ -6,6 +6,8 @@ public class Shape : PersistableObject
 {
     int shapeId = int.MinValue;
 
+    public int MaterialId { get; private set; }
+
     public int ShapeId 
     { 
         get => shapeId; 
@@ -19,5 +21,11 @@ public class Shape : PersistableObject
                 Debug.LogError("Not allowed to change shapeId");
             }
         } 
+    }
+
+    public void SetMaterial(Material material, int materialId) 
+    {
+        GetComponent<MeshRenderer>().material = material;
+        MaterialId = materialId;
     }
 }
