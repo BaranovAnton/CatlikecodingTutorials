@@ -3,32 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class PersistentStorage : MonoBehaviour
+namespace ObjectManagement.Scripts
 {
-	string savePath;
-
-	void Awake()
+	public class PersistentStorage : MonoBehaviour
 	{
-		savePath = Path.Combine(Application.persistentDataPath, "saveFile");
-	}
+		string savePath;
 
-	public void Save(PersistableObject o)
-	{
-		using (
-			var writer = new BinaryWriter(File.Open(savePath, FileMode.Create))
-		)
+		void Awake()
 		{
-			o.Save(new GameDataWriter(writer));
+			savePath = Path.Combine(Application.persistentDataPath, "saveFile");
 		}
-	}
 
-	public void Load(PersistableObject o)
-	{
-		using (
-			var reader = new BinaryReader(File.Open(savePath, FileMode.Open))
-		)
+		public void Save(PersistableObject o, int version)
 		{
-			o.Load(new GameDataReader(reader));
+			using (
+				var writer = new BinaryWriter(File.Open(savePath, FileMode.Create))
+			)
+			{
+				writer.Write(-version);
+				o.Save(new GameDataWriter(writer));
+			}
+		}
+
+		public void Load(PersistableObject o)
+		{
+			using (
+				var reader = new BinaryReader(File.Open(savePath, FileMode.Open))
+			)
+			{
+				o.Load(new GameDataReader(reader,-reader.ReadInt32()));
+			}
 		}
 	}
 }
