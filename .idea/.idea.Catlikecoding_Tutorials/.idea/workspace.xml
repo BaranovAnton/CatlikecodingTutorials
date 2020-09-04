@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83800817-8cc3-4b54-b667-45e22cd035fe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Metallic.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Metallic.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Shiny.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Shiny.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Standard.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Materials/Standard.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/GameDataReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/GameDataReader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/GameDataWriter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/GameDataWriter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/PersistableObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/PersistableObject.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/PersistentStorage.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/PersistentStorage.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Shape.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Shape.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/ShapeFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/ShapeFactory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +28,7 @@
         <option value="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/PersistentStorage.cs" />
         <option value="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Game.cs" />
         <option value="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Shape.cs" />
+        <option value="$PROJECT_DIR$/Assets/ObjectManagement/Shaders/NewSurfaceShader.shader" />
       </list>
     </option>
   </component>
@@ -71,6 +72,7 @@
       <option name="presentableId" value="Default" />
       <updated>1599119257866</updated>
       <workItem from="1599119268286" duration="2192000" />
+      <workItem from="1599222885391" duration="1283000" />
     </task>
     <servers />
   </component>

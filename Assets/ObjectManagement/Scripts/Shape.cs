@@ -6,9 +6,13 @@ namespace ObjectManagement.Scripts
 {
     public class Shape : PersistableObject
     {
+        static int colorPropertyId = Shader.PropertyToID("_Color");
+        static MaterialPropertyBlock sharedPropertyBlock;
+        
         int shapeId = int.MinValue;
 
         private Color color;
+        private MeshRenderer meshRenderer;
         
         public int MaterialId { get; private set; }
 
@@ -27,17 +31,24 @@ namespace ObjectManagement.Scripts
                 }
             }
         }
-
-        public void SetMaterial(Material material, int materialId)
-        {
-            GetComponent<MeshRenderer>().material = material;
-            MaterialId = materialId;
+        
+        void Awake () {
+            meshRenderer = GetComponent<MeshRenderer>();
         }
 
         public void SetColor(Color color)
         {
             this.color = color;
-            GetComponent<MeshRenderer>().material.color = color;
+            if (sharedPropertyBlock == null) {
+                sharedPropertyBlock = new MaterialPropertyBlock();
+            }
+            sharedPropertyBlock.SetColor(colorPropertyId, color);
+            meshRenderer.SetPropertyBlock(sharedPropertyBlock);
+        }
+        
+        public void SetMaterial (Material material, int materialId) {
+            meshRenderer.material = material;
+            MaterialId = materialId;
         }
 
         public override void Save(GameDataWriter writer)
