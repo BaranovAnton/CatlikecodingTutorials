@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ObjectManagement.Scripts 
@@ -7,7 +8,8 @@ namespace ObjectManagement.Scripts
     {
         public PersistentStorage storage;
         public ShapeFactory shapeFactory;
-        public KeyCode keyCode = KeyCode.C;
+        public KeyCode createKey = KeyCode.C;
+        public KeyCode destroyKey = KeyCode.X;
         public KeyCode newGameCode = KeyCode.N;
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
@@ -23,7 +25,7 @@ namespace ObjectManagement.Scripts
 
         void Update()
         {
-            if (Input.GetKeyDown(keyCode))
+            if (Input.GetKeyDown(createKey))
             {
                 CreateShape();
             } else if (Input.GetKeyDown(newGameCode))
@@ -36,6 +38,9 @@ namespace ObjectManagement.Scripts
             {
                 BeginNewGame();
                 storage.Load(this);
+            } else if (Input.GetKeyDown(destroyKey))
+            {
+                DestroyShape();
             }
         }
 
@@ -88,6 +93,16 @@ namespace ObjectManagement.Scripts
                 Shape instance = shapeFactory.Get(shapeId, materialId);
                 instance.Load(reader);
                 shapes.Add(instance);
+            }
+        }
+
+        private void DestroyShape()
+        {
+            if (shapes.Count > 0)
+            {
+                int index = Random.Range(0, shapes.Count);
+                Destroy(shapes[index].gameObject);
+                shapes.RemoveAt(index);
             }
         }
     }
