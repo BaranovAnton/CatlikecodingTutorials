@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83800817-8cc3-4b54-b667-45e22cd035fe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scenes/ObjectsManagement.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scenes/ObjectsManagement.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/Game.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +71,7 @@
       <workItem from="1599119268286" duration="2192000" />
       <workItem from="1599222885391" duration="1283000" />
       <workItem from="1599656323133" duration="913000" />
+      <workItem from="1600080214573" duration="2256000" />
     </task>
     <servers />
   </component>

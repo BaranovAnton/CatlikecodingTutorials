@@ -15,6 +15,10 @@ namespace ObjectManagement.Scripts
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
 
+        public float CreationSpeed { get; set; }
+        public float DestructionSpeed { get; set; }
+        private float creationProgress, destructionProgress;
+
         private List<Shape> shapes;
 
         const int saveVersion = 1;
@@ -41,6 +45,20 @@ namespace ObjectManagement.Scripts
                 storage.Load(this);
             } else if (Input.GetKeyDown(destroyKey))
             {
+                DestroyShape();
+            }
+            
+            creationProgress += Time.deltaTime * CreationSpeed;
+            while (creationProgress >= 1f)
+            {
+                creationProgress -= 1f;
+                CreateShape();
+            }
+            
+            destructionProgress += Time.deltaTime * DestructionSpeed;
+            while (destructionProgress >= 1f)
+            {
+                destructionProgress -= 1f;
                 DestroyShape();
             }
         }
