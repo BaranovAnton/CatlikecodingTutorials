@@ -44,8 +44,6 @@ namespace ObjectManagement.Scripts
                 instance = Instantiate(prefabs[shapeId]);
             }
             
-            instance = Instantiate(prefabs[shapeId]);
-            instance.ShapeId = shapeId;
             instance.SetMaterial(materials[materialId], materialId);
 
             return instance;
@@ -62,6 +60,22 @@ namespace ObjectManagement.Scripts
             for (int i = 0; i < pools.Length; i++)
             {
                 pools[i] = new List<Shape>();
+            }
+        }
+        
+        public void Reclaim (Shape shapeToRecycle) {
+            if (recycle) 
+            {
+                if (pools == null) 
+                {
+                    CreatePools();
+                }
+                pools[shapeToRecycle.ShapeId].Add(shapeToRecycle);
+                shapeToRecycle.gameObject.SetActive(false);
+            }
+            else 
+            {
+                Destroy(shapeToRecycle.gameObject);
             }
         }
     }

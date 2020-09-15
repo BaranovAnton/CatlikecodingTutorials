@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="83800817-8cc3-4b54-b667-45e22cd035fe" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Catlikecoding_Tutorials/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/ShapeFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ObjectManagement/Scripts/ShapeFactory.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,6 +71,7 @@
       <workItem from="1600080214573" duration="2256000" />
       <workItem from="1600099136139" duration="1803000" />
       <workItem from="1600100996161" duration="15000" />
+      <workItem from="1600173838193" duration="856000" />
     </task>
     <servers />
   </component>
