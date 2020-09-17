@@ -1,21 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace ObjectManagement.Scripts
 {
     [CreateAssetMenu]
     public class ShapeFactory : ScriptableObject
     {
+
         [SerializeField] Shape[] prefabs;
 
         [SerializeField] Material[] materials;
-        
+
         [SerializeField] bool recycle;
 
-        private List<Shape>[] pools;
+        List<Shape>[] pools;
         
+        private Scene poolScene;
+
         public Shape Get(int shapeId = 0, int materialId = 0)
         {
             Shape instance;
@@ -25,7 +27,7 @@ namespace ObjectManagement.Scripts
                 {
                     CreatePools();
                 }
-                
+
                 List<Shape> pool = pools[shapeId];
                 int lastIndex = pool.Count - 1;
                 if (lastIndex >= 0)
@@ -34,49 +36,74 @@ namespace ObjectManagement.Scripts
                     instance.gameObject.SetActive(true);
                     pool.RemoveAt(lastIndex);
                 }
-                else {
+                else
+                {
                     instance = Instantiate(prefabs[shapeId]);
                     instance.ShapeId = shapeId;
+                    SceneManager.MoveGameObjectToScene(instance.gameObject, poolScene);
                 }
             }
             else
             {
                 instance = Instantiate(prefabs[shapeId]);
+                instance.ShapeId = shapeId;
             }
-            
-            instance.SetMaterial(materials[materialId], materialId);
 
+            instance.SetMaterial(materials[materialId], materialId);
             return instance;
         }
 
         public Shape GetRandom()
         {
-            return Get(Random.Range(0, prefabs.Length), Random.Range(0, materials.Length));
+            return Get(
+                Random.Range(0, prefabs.Length),
+                Random.Range(0, materials.Length)
+            );
         }
 
-        private void CreatePools()
+        public void Reclaim(Shape shapeToRecycle)
+        {
+            if (recycle)
+            {
+                if (pools == null)
+                {
+                    CreatePools();
+                }
+
+                pools[shapeToRecycle.ShapeId].Add(shapeToRecycle);
+                shapeToRecycle.gameObject.SetActive(false);
+            }
+            else
+            {
+                Destroy(shapeToRecycle.gameObject);
+            }
+        }
+
+        void CreatePools()
         {
             pools = new List<Shape>[prefabs.Length];
             for (int i = 0; i < pools.Length; i++)
             {
                 pools[i] = new List<Shape>();
             }
-        }
-        
-        public void Reclaim (Shape shapeToRecycle) {
-            if (recycle) 
-            {
-                if (pools == null) 
-                {
-                    CreatePools();
+            
+            if (Application.isEditor) {
+                poolScene = SceneManager.GetSceneByName(name);
+                if (poolScene.isLoaded) {
+                    GameObject[] rootObjects = poolScene.GetRootGameObjects();
+                    for (int i = 0 ; i<rootObjects.Length; i++)
+                    {
+                        Shape pooledShape = rootObjects[i].GetComponent<Shape>();
+                        if (!pooledShape.gameObject.activeSelf)
+                        {
+                            pools[pooledShape.ShapeId].Add(pooledShape);
+                        }
+                    }
+                    return;
                 }
-                pools[shapeToRecycle.ShapeId].Add(shapeToRecycle);
-                shapeToRecycle.gameObject.SetActive(false);
             }
-            else 
-            {
-                Destroy(shapeToRecycle.gameObject);
-            }
+            
+            poolScene = SceneManager.CreateScene(name);
         }
     }
 }
