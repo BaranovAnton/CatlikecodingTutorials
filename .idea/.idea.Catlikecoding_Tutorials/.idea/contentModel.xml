@@ -15,6 +15,7 @@
             <e p="PersistentStorage.cs" t="Include" />
             <e p="Shape.cs" t="Include" />
             <e p="ShapeFactory.cs" t="Include" />
+            <e p="SpawnZone.cs" t="Include" />
           </e>
           <e p="Shaders" t="Include">
             <e p="InstancedColors.shader" t="Include" />

@@ -17,6 +17,7 @@ namespace ObjectManagement.Scripts
         public KeyCode saveKey = KeyCode.S;
         public KeyCode loadKey = KeyCode.L;
         public int levelCount;
+        public SpawnZone SpawnZoneOfLevel { get; set; }
         
         private int loadedLevelBuildIndex;
 
@@ -115,7 +116,7 @@ namespace ObjectManagement.Scripts
             Shape instance = shapeFactory.GetRandom();
             Transform t = instance.transform;
 
-            t.localPosition = Random.insideUnitSphere * 5f;
+            t.localPosition = SpawnZoneOfLevel.SpawnPoint;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1.0f);
             instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));
