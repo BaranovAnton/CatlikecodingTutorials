@@ -4,19 +4,21 @@ using UnityEngine;
 
 namespace ObjectManagement.Scripts
 {
-    public class SpawnZone : MonoBehaviour
+    public class SphereSpawnZone : SpawnZone
     {
-        [SerializeField] private bool surfaceOnly;
-        public Vector3 SpawnPoint
+        [SerializeField] bool surfaceOnly;
+
+        public override Vector3 SpawnPoint 
         {
-            get
-            {
+            get {
                 return transform.TransformPoint(
-                    surfaceOnly? Random.onUnitSphere : Random.insideUnitSphere);
+                    surfaceOnly ? Random.onUnitSphere : Random.insideUnitSphere
+                );
             }
         }
-        
-        void OnDrawGizmos () {
+
+        void OnDrawGizmos () 
+        {
             Gizmos.color = Color.cyan;
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawWireSphere(Vector3.zero, 1f);

@@ -1148,7 +1148,6 @@ MonoBehaviour:
   saveKey: 115
   loadKey: 108
   levelCount: 2
-  spawnZone: {fileID: 0}
 --- !u!4 &1451697214
 Transform:
   m_ObjectHideFlags: 0

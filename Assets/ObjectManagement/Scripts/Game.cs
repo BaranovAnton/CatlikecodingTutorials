@@ -9,14 +9,16 @@ namespace ObjectManagement.Scripts
 {
     public class Game : PersistableObject
     {
-        public PersistentStorage storage;
-        public ShapeFactory shapeFactory;
-        public KeyCode createKey = KeyCode.C;
-        public KeyCode destroyKey = KeyCode.X;
-        public KeyCode newGameCode = KeyCode.N;
-        public KeyCode saveKey = KeyCode.S;
-        public KeyCode loadKey = KeyCode.L;
-        public int levelCount;
+        public static Game Instance { get; private set; }
+    
+        [SerializeField] PersistentStorage storage;
+        [SerializeField] ShapeFactory shapeFactory;
+        [SerializeField] KeyCode createKey = KeyCode.C;
+        [SerializeField] KeyCode destroyKey = KeyCode.X;
+        [SerializeField] KeyCode newGameCode = KeyCode.N;
+        [SerializeField] KeyCode saveKey = KeyCode.S;
+        [SerializeField] KeyCode loadKey = KeyCode.L;
+        [SerializeField] int levelCount;
         public SpawnZone SpawnZoneOfLevel { get; set; }
         
         private int loadedLevelBuildIndex;
@@ -29,8 +31,15 @@ namespace ObjectManagement.Scripts
 
         const int saveVersion = 2;
 
+        void OnEnable () 
+        {
+            Instance = this;
+        }
+        
         private void Start()
         {
+            Instance = this;
+            
             shapes = new List<Shape>();
 
             if (Application.isEditor)
