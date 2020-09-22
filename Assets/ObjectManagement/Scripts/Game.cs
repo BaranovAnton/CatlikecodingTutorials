@@ -19,9 +19,13 @@ namespace ObjectManagement.Scripts
         [SerializeField] KeyCode saveKey = KeyCode.S;
         [SerializeField] KeyCode loadKey = KeyCode.L;
         [SerializeField] int levelCount;
+        
+        [SerializeField] bool reseedOnLoad;
         public SpawnZone SpawnZoneOfLevel { get; set; }
         
         private int loadedLevelBuildIndex;
+        
+        private Random.State mainRandomState;
 
         public float CreationSpeed { get; set; }
         public float DestructionSpeed { get; set; }
@@ -29,7 +33,7 @@ namespace ObjectManagement.Scripts
 
         private List<Shape> shapes;
 
-        const int saveVersion = 2;
+        const int saveVersion = 3;
 
         void OnEnable () 
         {
@@ -40,6 +44,7 @@ namespace ObjectManagement.Scripts
         {
             Instance = this;
             
+            mainRandomState = Random.state;
             shapes = new List<Shape>();
 
             if (Application.isEditor)
@@ -56,6 +61,7 @@ namespace ObjectManagement.Scripts
                 }
             }
             
+            BeginNewGame();
             StartCoroutine(LoadLevel(1));
         }
 
@@ -134,6 +140,11 @@ namespace ObjectManagement.Scripts
 
         private void BeginNewGame()
         {
+            Random.state = mainRandomState;
+            int seed = Random.Range(0, int.MaxValue) ^ (int)Time.unscaledTime;
+            mainRandomState = Random.state;
+            Random.InitState(seed);
+            
             for (int i=0; i<shapes.Count; i++)
             {
                 shapeFactory.Reclaim(shapes[i]);
@@ -144,6 +155,7 @@ namespace ObjectManagement.Scripts
         public override void Save(GameDataWriter writer)
         {
             writer.Write(shapes.Count);
+            writer.Write(Random.state);
             writer.Write(loadedLevelBuildIndex);
             for (int i = 0; i < shapes.Count; i++)
             {
@@ -163,7 +175,15 @@ namespace ObjectManagement.Scripts
             }
 
             int count = (version <= 0)? -version : reader.ReadInt();
+            if (version >= 3) {
+                Random.State state = reader.ReadRandomState();
+                if (!reseedOnLoad) 
+                {
+                    Random.state = state;
+                }
+            }
             StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
+            
             for (int i = 0; i < count; i++)
             {
                 int shapeId = version > 0 ? reader.ReadInt() : 0;
@@ -173,7 +193,7 @@ namespace ObjectManagement.Scripts
                 shapes.Add(instance);
             }
         }
-
+        
         private void DestroyShape()
         {
             if (shapes.Count > 0)

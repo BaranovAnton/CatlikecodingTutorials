@@ -11,11 +11,17 @@
             <e p="Game.cs" t="Include" />
             <e p="GameDataReader.cs" t="Include" />
             <e p="GameDataWriter.cs" t="Include" />
+            <e p="GameLevel.cs" t="Include" />
             <e p="PersistableObject.cs" t="Include" />
             <e p="PersistentStorage.cs" t="Include" />
             <e p="Shape.cs" t="Include" />
             <e p="ShapeFactory.cs" t="Include" />
-            <e p="SpawnZone.cs" t="Include" />
+            <e p="SpawnZone" t="Include">
+              <e p="CompositeSpawnZone.cs" t="Include" />
+              <e p="CubeSpawnZone.cs" t="Include" />
+              <e p="SpawnZone.cs" t="Include" />
+              <e p="SphereSpawnZone.cs" t="Include" />
+            </e>
           </e>
           <e p="Shaders" t="Include">
             <e p="InstancedColors.shader" t="Include" />
