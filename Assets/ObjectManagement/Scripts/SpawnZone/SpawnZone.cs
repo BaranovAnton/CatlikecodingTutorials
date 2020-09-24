@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ObjectManagement.Scripts
 {
-    public abstract class SpawnZone : MonoBehaviour
+    public abstract class SpawnZone : PersistableObject
     {
         public abstract Vector3 SpawnPoint
         {

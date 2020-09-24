@@ -27,12 +27,9 @@ namespace ObjectManagement.Scripts
 
 		public void Load(PersistableObject o)
 		{
-			using (
-				var reader = new BinaryReader(File.Open(savePath, FileMode.Open))
-			)
-			{
-				o.Load(new GameDataReader(reader,-reader.ReadInt32()));
-			}
+			byte[] data = File.ReadAllBytes(savePath);
+			var reader = new BinaryReader(new MemoryStream(data));
+			o.Load(new GameDataReader(reader, -reader.ReadInt32()));
 		}
 	}
 }

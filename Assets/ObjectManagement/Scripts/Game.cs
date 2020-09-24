@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
@@ -9,8 +10,6 @@ namespace ObjectManagement.Scripts
 {
     public class Game : PersistableObject
     {
-        public static Game Instance { get; private set; }
-    
         [SerializeField] PersistentStorage storage;
         [SerializeField] ShapeFactory shapeFactory;
         [SerializeField] KeyCode createKey = KeyCode.C;
@@ -21,10 +20,11 @@ namespace ObjectManagement.Scripts
         [SerializeField] int levelCount;
         
         [SerializeField] bool reseedOnLoad;
-        public SpawnZone SpawnZoneOfLevel { get; set; }
         
+        [SerializeField] Slider creationSpeedSlider;
+        [SerializeField] Slider destructionSpeedSlider;
+
         private int loadedLevelBuildIndex;
-        
         private Random.State mainRandomState;
 
         public float CreationSpeed { get; set; }
@@ -35,15 +35,8 @@ namespace ObjectManagement.Scripts
 
         const int saveVersion = 3;
 
-        void OnEnable () 
-        {
-            Instance = this;
-        }
-        
         private void Start()
         {
-            Instance = this;
-            
             mainRandomState = Random.state;
             shapes = new List<Shape>();
 
@@ -73,6 +66,7 @@ namespace ObjectManagement.Scripts
             } else if (Input.GetKeyDown(newGameCode))
             {
                 BeginNewGame();
+                StartCoroutine(LoadLevel(loadedLevelBuildIndex));
             } else if (Input.GetKeyDown(saveKey))
             {
                 storage.Save(this, saveVersion);
@@ -96,7 +90,10 @@ namespace ObjectManagement.Scripts
                     }
                 }
             }
-            
+        }
+
+        private void FixedUpdate()
+        {
             creationProgress += Time.deltaTime * CreationSpeed;
             while (creationProgress >= 1f)
             {
@@ -111,7 +108,7 @@ namespace ObjectManagement.Scripts
                 DestroyShape();
             }
         }
-        
+
         private IEnumerator LoadLevel (int levelBuildIndex)
         {
             enabled = false;
@@ -131,7 +128,7 @@ namespace ObjectManagement.Scripts
             Shape instance = shapeFactory.GetRandom();
             Transform t = instance.transform;
 
-            t.localPosition = SpawnZoneOfLevel.SpawnPoint;
+            t.localPosition = GameLevel.Current.SpawnPoint;
             t.localRotation = Random.rotation;
             t.localScale = Vector3.one * Random.Range(0.1f, 1.0f);
             instance.SetColor(Random.ColorHSV(0f, 1f, 0.5f, 1f, 0.25f, 1f, 1f, 1f));
@@ -145,6 +142,9 @@ namespace ObjectManagement.Scripts
             mainRandomState = Random.state;
             Random.InitState(seed);
             
+            creationSpeedSlider.value = CreationSpeed = 0;
+            destructionSpeedSlider.value = DestructionSpeed = 0;
+            
             for (int i=0; i<shapes.Count; i++)
             {
                 shapeFactory.Reclaim(shapes[i]);
@@ -156,7 +156,12 @@ namespace ObjectManagement.Scripts
         {
             writer.Write(shapes.Count);
             writer.Write(Random.state);
+            writer.Write(CreationSpeed);
+            writer.Write(creationProgress);
+            writer.Write(DestructionSpeed);
+            writer.Write(destructionProgress);
             writer.Write(loadedLevelBuildIndex);
+            GameLevel.Current.Save(writer);
             for (int i = 0; i < shapes.Count; i++)
             {
                 writer.Write(shapes[i].ShapeId);
@@ -174,6 +179,12 @@ namespace ObjectManagement.Scripts
                 return;
             }
 
+            StartCoroutine(LoadGame(reader));
+        }
+
+        IEnumerator LoadGame(GameDataReader reader)
+        {
+            int version = reader.Version;
             int count = (version <= 0)? -version : reader.ReadInt();
             if (version >= 3) {
                 Random.State state = reader.ReadRandomState();
@@ -181,8 +192,17 @@ namespace ObjectManagement.Scripts
                 {
                     Random.state = state;
                 }
+                creationSpeedSlider.value = CreationSpeed = reader.ReadFloat();
+                creationProgress = reader.ReadFloat();
+                destructionSpeedSlider.value = DestructionSpeed = reader.ReadFloat();
+                destructionProgress = reader.ReadFloat();
             }
-            StartCoroutine(LoadLevel(version < 2 ? 1 : reader.ReadInt()));
+
+            yield return LoadLevel(version < 2 ? 1 : reader.ReadInt());
+            if (version >= 3)
+            {
+                GameLevel.Current.Load(reader);
+            }
             
             for (int i = 0; i < count; i++)
             {
